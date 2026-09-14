@@ -28,8 +28,6 @@ def dokumanlari_yukle():
     connection = veritabani_baglantisi()
     cursor = connection.cursor()
 
-    print("PostgreSQL bağlantısı başarılı.")
-
     dosyalar = os.listdir("documents")
 
     for dosya_adi in dosyalar:
@@ -37,46 +35,50 @@ def dokumanlari_yukle():
         if not dosya_adi.lower().endswith(".txt"):
             continue
 
-        print("\nİşlenen dosya:", dosya_adi)
+        dosya_yolu = os.path.join(
+            "documents",
+            dosya_adi
+        )
 
-        dosya_yolu = os.path.join("documents", dosya_adi)
+        with open(
+            dosya_yolu,
+            "r",
+            encoding="utf-8"
+        ) as dosya:
 
-        with open(dosya_yolu, "r", encoding="utf-8") as dosya:
             metin = dosya.read()
 
-        chunk_sayisi = dokuman_kaydet(
+        dokuman_kaydet(
             cursor,
             dosya_adi,
             metin
         )
-
-        print("Toplam chunk sayısı:", chunk_sayisi)
 
     connection.commit()
 
     cursor.close()
     connection.close()
 
-    print("\nTüm dokümanlar PostgreSQL'e kaydedildi.")
-
 
 def tek_dokuman_yukle(dosya_adi):
 
-    print("Gelen dosya adı:", dosya_adi)
-
-    dosya_yolu = os.path.join("documents", dosya_adi)
+    dosya_yolu = os.path.join(
+        "documents",
+        dosya_adi
+    )
 
     if dosya_adi.lower().endswith(".pdf"):
-
-        print("PDF dosyası algılandı.")
 
         metin = pdf_metni_oku(dosya_yolu)
 
     else:
 
-        print("TXT dosyası algılandı.")
+        with open(
+            dosya_yolu,
+            "r",
+            encoding="utf-8"
+        ) as dosya:
 
-        with open(dosya_yolu, "r", encoding="utf-8") as dosya:
             metin = dosya.read()
 
     if not metin.strip():
@@ -84,8 +86,6 @@ def tek_dokuman_yukle(dosya_adi):
         raise ValueError(
             "Dokümandan metin çıkarılamadı."
         )
-
-    print("Dokümandan metin çıkarıldı.")
 
     connection = veritabani_baglantisi()
     cursor = connection.cursor()
@@ -116,16 +116,6 @@ def rag_soru_cevapla(soru):
         soru_embedding
     )
 
-    print("\nEn benzer chunklar:")
-
-    for sonuc in sonuclar:
-
-        print("\nChunk ID:", sonuc[0])
-        print("Chunk sırası:", sonuc[1])
-        print("Benzerlik mesafesi:", sonuc[3])
-        print("Kaynak:", sonuc[4])
-        print("İçerik:", sonuc[2])
-
     if not sonuclar:
 
         cursor.close()
@@ -140,9 +130,11 @@ def rag_soru_cevapla(soru):
 
     for sonuc in sonuclar:
 
-        context += f"Kaynak: {sonuc[4]}\n"
-        context += f"Parça: {sonuc[1]}\n"
-        context += sonuc[2] + "\n\n"
+        context += (
+            f"Kaynak: {sonuc[4]}\n"
+            f"Parça: {sonuc[1]}\n"
+            f"{sonuc[2]}\n\n"
+        )
 
     cevap = cevap_olustur(
         soru,
@@ -154,7 +146,6 @@ def rag_soru_cevapla(soru):
     for sonuc in sonuclar:
 
         mesafe = sonuc[3]
-        benzerlik = 1 - mesafe
 
         kaynaklar.append({
             "chunk_id": sonuc[0],
@@ -162,7 +153,7 @@ def rag_soru_cevapla(soru):
             "kaynak": sonuc[4],
             "icerik": sonuc[2],
             "mesafe": mesafe,
-            "benzerlik": benzerlik
+            "benzerlik": 1 - mesafe
         })
 
     cursor.close()
@@ -178,7 +169,7 @@ def main():
 
     dokumanlari_yukle()
 
-    soru = input("\nSorunuzu yazın: ")
+    soru = input("Sorunuzu yazın: ")
 
     sonuc = rag_soru_cevapla(soru)
 
@@ -190,14 +181,9 @@ def main():
     for kaynak in sonuc["kaynaklar"]:
 
         print(
-            "Chunk ID:",
-            kaynak["chunk_id"],
-            "- Chunk sırası:",
-            kaynak["chunk_index"],
-            "-",
             kaynak["kaynak"],
-            "- Mesafe:",
-            kaynak["mesafe"],
+            "- Parça:",
+            kaynak["chunk_index"],
             "- Benzerlik:",
             kaynak["benzerlik"]
         )

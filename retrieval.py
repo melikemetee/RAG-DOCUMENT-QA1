@@ -1,14 +1,20 @@
-def benzer_chunklari_getir(cursor, soru_embedding, limit=3, esik_degeri=0.40):
+def benzer_chunklari_getir(
+    cursor,
+    soru_embedding,
+    limit=3,
+    esik_degeri=0.40
+):
 
-    soru_embedding_text = "[" + ",".join(map(str, soru_embedding)) + "]"
+    embedding_text = "[" + ",".join(
+        map(str, soru_embedding)
+    ) + "]"
 
-    cursor.execute(
-        """
+    sorgu = """
         SELECT
             chunks.id,
             chunks.chunk_index,
             chunks.content,
-            chunks.embedding <=> %s::vector AS distance,
+            chunks.embedding <=> %s::vector,
             documents.filename
         FROM chunks
         JOIN documents
@@ -16,14 +22,19 @@ def benzer_chunklari_getir(cursor, soru_embedding, limit=3, esik_degeri=0.40):
         WHERE chunks.embedding <=> %s::vector <= %s
         ORDER BY chunks.embedding <=> %s::vector
         LIMIT %s
-        """,
+    """
+
+    cursor.execute(
+        sorgu,
         (
-            soru_embedding_text,
-            soru_embedding_text,
+            embedding_text,
+            embedding_text,
             esik_degeri,
-            soru_embedding_text,
+            embedding_text,
             limit
         )
     )
 
-    return cursor.fetchall()
+    sonuclar = cursor.fetchall()
+
+    return sonuclar

@@ -7,25 +7,18 @@ def dokuman_kaydet(cursor, dosya_adi, metin):
     parcalar = metni_parcala(metin)
 
     cursor.execute(
-        """
-        SELECT id
-        FROM documents
-        WHERE filename = %s
-        """,
+        "SELECT id FROM documents WHERE filename = %s",
         (dosya_adi,)
     )
 
-    mevcut_document = cursor.fetchone()
+    document = cursor.fetchone()
 
-    if mevcut_document:
+    if document:
 
-        document_id = mevcut_document[0]
+        document_id = document[0]
 
         cursor.execute(
-            """
-            DELETE FROM chunks
-            WHERE document_id = %s
-            """,
+            "DELETE FROM chunks WHERE document_id = %s",
             (document_id,)
         )
 
@@ -33,8 +26,7 @@ def dokuman_kaydet(cursor, dosya_adi, metin):
 
         cursor.execute(
             """
-            INSERT INTO documents
-            (filename, created_at, updated_at)
+            INSERT INTO documents (filename, created_at, updated_at)
             VALUES (%s, NOW(), NOW())
             RETURNING id
             """,
@@ -43,14 +35,15 @@ def dokuman_kaydet(cursor, dosya_adi, metin):
 
         document_id = cursor.fetchone()[0]
 
-    for i, parca in enumerate(parcalar, start=1):
+    for i in range(len(parcalar)):
+
+        parca = parcalar[i]
 
         embedding = embedding_olustur(parca)
 
-        print(f"Chunk {i} embedding oluşturuldu.")
-        print("Embedding boyutu:", len(embedding))
-
-        embedding_text = "[" + ",".join(map(str, embedding)) + "]"
+        embedding_text = "[" + ",".join(
+            map(str, embedding)
+        ) + "]"
 
         cursor.execute(
             """
@@ -62,10 +55,8 @@ def dokuman_kaydet(cursor, dosya_adi, metin):
                 document_id,
                 parca,
                 embedding_text,
-                i
+                i + 1
             )
         )
-
-        print(f"Chunk {i} PostgreSQL'e kaydedildi.")
 
     return len(parcalar)

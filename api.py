@@ -1,18 +1,19 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
 from rag import rag_soru_cevapla, tek_dokuman_yukle
 from database import veritabani_baglantisi
 
 
 app = FastAPI()
 
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
-    allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],
+    allow_headers=["*"]
 )
 
 
@@ -27,9 +28,7 @@ class Dokuman(BaseModel):
 @app.get("/")
 def ana_sayfa():
 
-    return {
-        "message": "RAG API çalışıyor"
-    }
+    return {"message": "RAG API çalışıyor"}
 
 
 @app.post("/sor")
@@ -74,12 +73,10 @@ def dokumanlari_getir():
 
     cursor.execute(
         """
-        SELECT
-            documents.filename,
-            COUNT(chunks.id) AS chunk_sayisi
+        SELECT documents.filename, COUNT(chunks.id)
         FROM documents
         LEFT JOIN chunks
-            ON documents.id = chunks.document_id
+        ON documents.id = chunks.document_id
         GROUP BY documents.id, documents.filename
         ORDER BY documents.id
         """
@@ -100,3 +97,13 @@ def dokumanlari_getir():
         })
 
     return dokumanlar
+
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(
+        app,
+        host="127.0.0.1",
+        port=8000
+    )
