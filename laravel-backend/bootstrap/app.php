@@ -14,7 +14,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->validateCsrfTokens(except: [
             'sor',
-            'yukle'
+            'yukle',
+            'api/yukle',
+            'api/sor'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

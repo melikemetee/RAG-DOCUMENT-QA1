@@ -20,4 +20,8 @@ Route::get('/sor', function () {
 
 Route::post('/sor', [QuestionController::class, 'sor']);
 
+Route::post('/api/sor', [QuestionController::class, 'apiSor']);
+
 Route::post('/yukle', [UploadController::class, 'yukle']);
+
+Route::post('/api/yukle', [UploadController::class, 'apiYukle']);

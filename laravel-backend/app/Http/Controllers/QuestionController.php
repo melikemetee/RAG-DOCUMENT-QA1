@@ -31,5 +31,28 @@ class QuestionController extends Controller
             'dokumanlar' => $dokumanlar
         ]);
     }
-}
 
+    public function apiSor(Request $request)
+    {
+        $response = Http::post(
+            'http://127.0.0.1:8000/sor',
+            [
+                'soru' => $request->soru
+            ]
+        );
+
+        if ($response->failed()) {
+            return response()->json([
+                'hata' => 'FastAPI soru işlemi başarısız oldu.'
+            ], 500);
+        }
+
+        $sonuc = $response->json();
+
+        return response()->json([
+            'soru' => $sonuc['soru'] ?? $request->soru,
+            'cevap' => $sonuc['cevap'] ?? '',
+            'kaynaklar' => $sonuc['kaynaklar'] ?? []
+        ]);
+    }
+}
