@@ -2,7 +2,7 @@
 
 A Retrieval-Augmented Generation (RAG) based document question answering system.
 
-The system allows users to upload TXT and PDF documents, split the content into smaller chunks, create embeddings, store them in PostgreSQL with pgvector, and ask questions about the uploaded documents.
+This project allows users to upload TXT and PDF documents, split the content into smaller chunks, create embeddings, store them in PostgreSQL with pgvector, and ask questions about the uploaded documents.
 
 ## Features
 
@@ -240,7 +240,7 @@ pip install google-genai python-dotenv psycopg2-binary fastapi uvicorn pypdf
 From the project root:
 
 ```text
-uvicorn api:app
+python api.py
 ```
 
 The API will run at:
@@ -317,6 +317,8 @@ The system:
 4. Sends the chunks and question to Gemini.
 5. Generates an answer.
 6. Displays the answer and its sources.
+
+If the requested information is not available in the uploaded documents, the system does not generate an answer from unrelated information.
 
 ## Project Goal
 
