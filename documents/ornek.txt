@@ -1,0 +1,9 @@
+Python, yüksek seviyeli ve genel amaçlı bir programlama dilidir.
+
+Python veri analizi, yapay zeka, makine öğrenmesi ve web geliştirme gibi birçok alanda kullanılabilir.
+
+Python'da listeler birden fazla değeri tek bir değişken içerisinde saklamak için kullanılır.
+
+Listeler köşeli parantez kullanılarak oluşturulur.
+
+Python'da sözlükler anahtar ve değer çiftlerinden oluşur.

@@ -1,0 +1,3 @@
+Python kolay öğrenilebilen, yüksek seviyeli bir programlama dilidir.
+Python veri analizi, yapay zeka ve web geliştirme alanlarında kullanılabilir.
+Python'da listeler birden fazla değeri saklamak için kullanılır.

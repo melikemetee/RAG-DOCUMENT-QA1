@@ -1,0 +1,13 @@
+Yapay zeka, bilgisayarların insan benzeri görevleri gerçekleştirmesini sağlayan bir teknolojidir. Yapay zeka sistemleri veri kullanarak belirli görevleri yerine getirebilir. Makine öğrenmesi, yapay zekanın önemli bir alt alanıdır. Makine öğrenmesi algoritmaları verilerden öğrenerek tahminler ve sınıflandırmalar yapabilir. Derin öğrenme ise yapay sinir ağlarını kullanan bir makine öğrenmesi yöntemidir.
+
+Python, veri analizi ve yapay zeka projelerinde sık kullanılan bir programlama dilidir. Python ile veri işleme, veri görselleştirme ve makine öğrenmesi çalışmaları yapılabilir. Pandas kütüphanesi veri tabloları ile çalışmak için kullanılır. NumPy sayısal işlemler için kullanılır. Matplotlib ise verilerin grafik şeklinde gösterilmesini sağlar.
+
+RAG sistemleri dokümanlardan bilgi alarak kullanıcı sorularına cevap vermek için kullanılabilir. RAG sisteminde dokümanlar önce küçük parçalara ayrılır. Bu parçalara chunk adı verilir. Daha sonra her chunk için embedding oluşturulur. Embedding, metnin sayısal bir vektör ile temsil edilmesini sağlar. Bu vektörler PostgreSQL ve pgvector gibi sistemlerde saklanabilir.
+
+Kullanıcı bir soru sorduğunda soru için de embedding oluşturulur. Daha sonra soru embedding'i ile doküman chunklarının embeddingleri karşılaştırılır. Soruya anlam olarak en yakın chunklar bulunur. Bu işlem retrieval olarak adlandırılır. Bulunan chunklar cevap oluşturacak yapay zeka modeline context olarak gönderilir.
+
+PostgreSQL açık kaynaklı bir ilişkisel veritabanı yönetim sistemidir. PostgreSQL içerisinde farklı türlerde veriler saklanabilir. pgvector eklentisi ise PostgreSQL içerisinde vektör verilerinin saklanmasına ve benzerlik aramalarının yapılmasına yardımcı olur. RAG projelerinde bu özellik oldukça kullanışlıdır.
+
+Bir RAG uygulamasında doğru chunking yöntemi önemlidir. Chunklar çok büyük olursa gereksiz bilgiler context içerisinde bulunabilir. Chunklar çok küçük olursa önemli bilgiler birbirinden ayrılabilir. Bu nedenle chunk boyutu ve overlap değeri dikkatli seçilmelidir. Overlap, iki chunk arasında tekrar edilen bilgi bölümünü ifade eder.
+
+Bir yapay zeka uygulamasının başarılı olması yalnızca model seçimine bağlı değildir. Veri kalitesi, veri işleme, embedding modeli, retrieval yöntemi ve oluşturulan context de sonuçların kalitesini etkiler. Bu nedenle RAG sistemi geliştirilirken her aşamanın ayrı ayrı test edilmesi önemlidir.
