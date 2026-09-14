@@ -2,21 +2,23 @@
 
 A Retrieval-Augmented Generation (RAG) based document question answering system.
 
-The system allows users to upload TXT and PDF documents, process their content into smaller chunks, create embeddings, store them in PostgreSQL with pgvector, and ask questions about the uploaded documents.
+The system allows users to upload TXT and PDF documents, split the content into smaller chunks, create embeddings, store them in PostgreSQL with pgvector, and ask questions about the uploaded documents.
 
 ## Features
 
 * Upload TXT and PDF documents
 * Extract text from PDF files
 * Split documents into smaller chunks
+* Use overlap between chunks
 * Create embeddings using Gemini
 * Store document chunks and embeddings in PostgreSQL
 * Use pgvector for vector similarity search
-* Retrieve the most relevant document chunks
+* Retrieve relevant document chunks
 * Generate answers using Gemini
 * Show source documents and retrieved chunks
 * Display document and chunk information
-* Laravel-based web interface
+* React frontend
+* Laravel backend
 * FastAPI backend for AI and RAG operations
 
 ## Technologies
@@ -28,6 +30,7 @@ The system allows users to upload TXT and PDF documents, process their content i
 * pgvector
 * PHP
 * Laravel
+* ReactJS
 * HTML
 * CSS
 * pypdf
@@ -35,7 +38,7 @@ The system allows users to upload TXT and PDF documents, process their content i
 
 ## Project Structure
 
-```
+```text
 RAG-DOCUMENT-QA1/
 │
 ├── documents/
@@ -56,6 +59,12 @@ RAG-DOCUMENT-QA1/
 ├── save_embeddings.py
 ├── modeller.py
 │
+├── frontend/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   └── ...
+│
 ├── laravel-backend/
 │   ├── app/
 │   ├── resources/
@@ -72,7 +81,7 @@ The system follows these main steps:
 
 ### 1. Document Upload
 
-The user uploads a TXT or PDF document through the Laravel web interface.
+The user uploads a TXT or PDF document through the web interface.
 
 ### 2. Text Extraction
 
@@ -178,7 +187,7 @@ Receives a question and returns:
 
 Example request:
 
-```
+```json
 {
     "soru": "Python nedir?"
 }
@@ -206,7 +215,7 @@ Create a `.env` file in the project root.
 
 Example:
 
-```
+```text
 GEMINI_API_KEY=your_api_key
 
 DB_HOST=localhost
@@ -222,7 +231,7 @@ Do not upload your `.env` file to GitHub.
 
 Install the required Python packages:
 
-```
+```text
 pip install google-genai python-dotenv psycopg2-binary fastapi uvicorn pypdf
 ```
 
@@ -230,19 +239,19 @@ pip install google-genai python-dotenv psycopg2-binary fastapi uvicorn pypdf
 
 From the project root:
 
-```
+```text
 uvicorn api:app
 ```
 
 The API will run at:
 
-```
+```text
 http://127.0.0.1:8000
 ```
 
 FastAPI documentation is available at:
 
-```
+```text
 http://127.0.0.1:8000/docs
 ```
 
@@ -250,27 +259,53 @@ http://127.0.0.1:8000/docs
 
 Open another terminal and go to the Laravel project:
 
-```
+```text
 cd laravel-backend
 ```
 
 Then run:
 
-```
+```text
 php artisan serve --port=8001
 ```
 
-The web application will be available at:
+The Laravel backend will run at:
 
-```
+```text
 http://127.0.0.1:8001
+```
+
+### 6. Start React
+
+Open another terminal and go to the frontend folder:
+
+```text
+cd frontend
+```
+
+Install the dependencies:
+
+```text
+npm install
+```
+
+Then start the React application:
+
+```text
+npm run dev
+```
+
+The React application will be available at:
+
+```text
+http://localhost:5173
 ```
 
 ## Example
 
 A user can upload a document containing information about Python and then ask:
 
-```
+```text
 Python nedir?
 ```
 
@@ -287,7 +322,7 @@ The system:
 
 The main goal of this project is to understand and implement the basic workflow of a RAG system by combining document processing, vector embeddings, similarity search, database technologies, and generative AI.
 
-The project also provides practical experience with integrating Python-based AI services with a Laravel web application.
+The project also provides practical experience with integrating Python-based AI services with a Laravel backend and React frontend.
 
 ## Current Status
 
@@ -295,31 +330,18 @@ The core RAG workflow is working.
 
 Implemented features:
 
-* [x] TXT document upload
-* [x] PDF document upload
-* [x] PDF text extraction
-* [x] Document chunking
-* [x] Gemini embeddings
-* [x] PostgreSQL database
-* [x] pgvector
-* [x] Vector similarity search
-* [x] Gemini answer generation
-* [x] Source display
-* [x] FastAPI backend
-* [x] Laravel web interface
-* [x] GitHub repository
-
-## Future Improvements
-
-Possible future improvements include:
-
-* Better chunking strategies
-* More advanced document processing
-* Improved source highlighting
-* Document deletion
-* User authentication
-* Better error handling
-* Improved UI/UX
-* Support for additional document formats
-* More advanced vector search
-* Deployment of the application
+* TXT document upload
+* PDF document upload
+* PDF text extraction
+* Document chunking
+* Chunk overlap
+* Gemini embeddings
+* PostgreSQL database
+* pgvector
+* Vector similarity search
+* Gemini answer generation
+* Source display
+* FastAPI backend
+* Laravel backend
+* React frontend
+* GitHub repository
