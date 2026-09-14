@@ -323,6 +323,3 @@ Possible future improvements include:
 * Support for additional document formats
 * More advanced vector search
 * Deployment of the application
-
-
-GitHub: [melikemetee](https://github.com/melikemetee)
